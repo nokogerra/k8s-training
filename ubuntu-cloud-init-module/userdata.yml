@@ -40,7 +40,7 @@ users:
     shell: /bin/bash
     sudo: ['ALL=(ALL) NOPASSWD:ALL']
     ssh_authorized_keys:
-      - ssh-rsa ${ci_ssh_rsa_pub}
+      - ${ci_ssh_rsa_pub}
 chpasswd:
   list: |
     default-user:$6$u4QdFzm8YjVbHnKG$alf5CvGcGBPKBaPDCthOnBV/YUGMkjLGdeT5oH3wDTvUYeLUBIT2Psv9kPPcPimB4wGB6PjH7CcEMgH/yJVXn0
