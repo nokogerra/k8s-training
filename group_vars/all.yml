@@ -2,6 +2,13 @@ kernel_modules:
 - overlay
 - br_netfilter
 
-modules_path: "/etc/modules-load.d/containerd.conf"
+kernel_modules_path: "/etc/modules-load.d/containerd.conf"
+
+sysctl_params:
+- "net.bridge.bridge-nf-call-iptables  = 1"
+- "net.ipv4.ip_forward                 = 1"
+- "net.bridge.bridge-nf-call-ip6tables = 1"
+
+sysctl_params_path: "/etc/sysctl.d/99-kubernetes-cri.conf"
 
 templates_dir: "templates/"

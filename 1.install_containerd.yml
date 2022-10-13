@@ -8,5 +8,9 @@
   - name: "create modules config"
     ansible.builtin.template:
       src: "{{ templates_dir }}/containerd_modules.j2"
-      dest: "{{ modules_path }}"
+      dest: "{{ kernel_modules_path }}"
+  - name: "configure sysctl params"
+    ansible.builtin.template:
+      src: "{{ templates_dir }}/sysctl_params.j2"
+      dest: "{{ sysctl_params_path }}"
 ...
