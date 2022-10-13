@@ -8,12 +8,13 @@ resource "vcd_vapp_vm" "vm" {
     computer_name   = var.mod_vm_name
     name            = var.mod_vm_name
 
-#  override_template_disk {
-#    size_in_mb  = var.system_disk_size * 1024
-#    bus_type    = var.system_disk_bus
-#    bus_number  = 0
-#    unit_number = 0
-#  }
+  override_template_disk {
+    size_in_mb  = var.mod_system_disk_size * 1024
+    bus_type    = "paravirtual"
+    bus_number  = 0
+    unit_number = 0
+  }
+
   network {
     type                     = "org"
     name                     = var.mod_vapp_network

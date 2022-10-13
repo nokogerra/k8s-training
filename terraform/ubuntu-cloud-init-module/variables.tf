@@ -27,6 +27,11 @@ variable "mod_vm_cpus" {
   default = "default"  
 }
 
+variable "mod_system_disk_size" {
+  description = ""
+  default = "default"  
+}
+
 variable "mod_storage_profile" {
   description = ""
   default = "default"  

@@ -93,6 +93,11 @@ variable "vm_cpus" {
   default = "default"  
 }
 
+variable "system_disk_size" {
+  description = ""
+  default = "default"  
+}
+
 variable "vm_data_disks" {
   type = list(object({
 #    mount_point     = string

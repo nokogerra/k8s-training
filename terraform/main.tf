@@ -21,6 +21,7 @@ module "ubuntu-cloud-init-module" {
   mod_ci_ssh_rsa_pub     = var.ci_ssh_rsa_pub
   mod_vm_mem             = var.vm_mem
   mod_vm_cpus            = var.vm_cpus
+  mod_system_disk_size   = var.system_disk_size
   mod_storage_profile    = var.storage_profile
   mod_vapp_network       = var.vapp_network
   mod_vm_data_disks      = var.vm_data_disks

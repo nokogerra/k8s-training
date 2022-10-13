@@ -1,0 +1,7 @@
+kernel_modules:
+- overlay
+- br_netfilter
+
+modules_path: "/etc/modules-load.d/containerd.conf"
+
+templates_dir: "templates/"

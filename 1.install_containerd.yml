@@ -1,0 +1,12 @@
+---
+- name: "install containerd on all nodes"
+  hosts: all
+  tasks:
+  - name: "enable modules"
+    ansible.builtin.shell: sudo modprobe {{ item }}
+    loop: "{{ kernel_modules }}"
+  - name: "create modules config"
+    ansible.builtin.template:
+    src: "{{ templates_dir }}/containerd_modules.j2"
+    dest: "{{ modules_path }}"
+...
