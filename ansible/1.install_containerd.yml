@@ -22,8 +22,12 @@
       name: "{{ item.name }}"
       selection: hold
     loop: "{{ common_packages }}"
-  - name: "show held packages"
+  - name: "get held packages"
     shell: apt-mark showhold
+    register: held_packages
+  - name: "show held packages"
+    debug:
+      var: held_packages
   - name: "enable kernel modules needed by containerd"
     ansible.builtin.shell: "sudo modprobe {{ item }}"
     loop: "{{ kernel_modules }}"
