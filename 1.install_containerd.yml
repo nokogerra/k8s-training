@@ -30,4 +30,12 @@
       dest: "{{ containerd_dir }}/{{ containerd_conf }}"
   - name: "restart containerd"
     shell: sudo systemctl restart containerd
+  - name: "Add an apt signing key for K8s"
+    apt_key:
+      url: "{{ kubernetes_gpg_url }}"
+      state: present
+  - name: "Add apt K8s repository for stable version"
+    apt_repository:
+      repo: "{{ kubernetes_repo }}"
+      state: present
 ...

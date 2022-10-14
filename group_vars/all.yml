@@ -15,6 +15,10 @@ sysctl_params_path: "/etc/sysctl.d/99-kubernetes-cri.conf"
 
 common_packages:
  - containerd
+ - 
 
 containerd_dir: "/etc/containerd"
 containerd_conf: "config.toml"
+
+kubernetes_gpg_url: "https://packages.cloud.google.com/apt/doc/apt-key.gpg"
+kubernetes_repo: "deb https://apt.kubernetes.io/ kubernetes-xenial main" 
