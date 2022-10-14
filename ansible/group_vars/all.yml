@@ -15,7 +15,7 @@ sysctl_params_path: "/etc/sysctl.d/99-kubernetes-cri.conf"
 
 common_packages:
 - name: "containerd"
-  version: "1.5.9-0ubuntu1~20.04.4"
+  version: "=1.5.9-0ubuntu1~20.04.4"
 - name: "kubelet"
   version: "=1.21.0-00"
 - name: "kubeadm"
