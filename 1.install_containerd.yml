@@ -13,4 +13,21 @@
     ansible.builtin.template:
       src: "{{ templates_dir }}/sysctl_params.j2"
       dest: "{{ sysctl_params_path }}"
+  - name: "apply systcl params"
+    ansible.builtin.shell: sudo sysctl --system
+  - name: "install containerd package"
+    apt:
+      name: containerd
+      state: latest
+      update_cache: yes
+  - name: "create containerd dir"
+    file:
+      name: "{{ containerd_dir }}"
+      state: directory
+  - name: "create containerd config"
+    copy:
+      src: "{{ templates_dir }}/containerd_conf.toml"
+      dest: "{{ containerd_dir }}/{{ containerd_conf }}"
+  - name: "restart containerd"
+    shell: sudo systemctl restart containerd
 ...

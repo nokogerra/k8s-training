@@ -1,3 +1,5 @@
+templates_dir: "templates/"
+
 kernel_modules:
 - overlay
 - br_netfilter
@@ -14,4 +16,8 @@ sysctl_params:
 
 sysctl_params_path: "/etc/sysctl.d/99-kubernetes-cri.conf"
 
-templates_dir: "templates/"
+common_packages:
+ - containerd
+
+containerd_dir: "/etc/containerd"
+containerd_conf: "config.toml"
