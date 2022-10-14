@@ -27,7 +27,7 @@
     register: held_packages
   - name: "show held packages"
     debug:
-      var: held_packages
+      msg: "{{ held_packages.stdout_lines }}"
   - name: "enable kernel modules needed by containerd"
     ansible.builtin.shell: "sudo modprobe {{ item }}"
     loop: "{{ kernel_modules }}"
