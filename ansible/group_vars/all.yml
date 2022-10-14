@@ -14,8 +14,14 @@ sysctl_params:
 sysctl_params_path: "/etc/sysctl.d/99-kubernetes-cri.conf"
 
 common_packages:
- - containerd
- - 
+- containerd
+- kubelet=1.21.0-00
+- kubeadm=1.21.0-00
+- kubectl=1.21.0-00
+
+common_services:
+- kubelet.service
+- containerd.service
 
 containerd_dir: "/etc/containerd"
 containerd_conf: "config.toml"

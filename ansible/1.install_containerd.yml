@@ -1,0 +1,54 @@
+---
+- name: "install containerd on all nodes"
+  hosts: all
+  tasks:
+  - name: "Add an apt signing key for K8s"
+    apt_key:
+      url: "{{ kubernetes_gpg_url }}"
+      state: present
+  - name: "Add apt K8s repository for stable version"
+    apt_repository:
+      repo: "{{ kubernetes_repo }}"
+      state: present
+  - name: "install packages"
+    apt:
+      name: "{{ item }}"
+      state: present
+      update_cache: yes
+    loop: "{{ common_packages }}"
+  - name: "hold installed packages"
+    dpkg_selections:
+      name: "{{ item }}"
+      selection: hold
+    loop: "{{ common_packages }}"
+  - name: "show held packages"
+    shell: apt-mark showhold
+  - name: "enable kernel modules needed by containerd"
+    ansible.builtin.shell: "sudo modprobe {{ item }}"
+    loop: "{{ kernel_modules }}"
+  - name: "create kernel modules auto-load config"
+    ansible.builtin.template:
+      src: "{{ templates_dir }}/containerd_modules.j2"
+      dest: "{{ kernel_modules_path }}"
+  - name: "configure sysctl params needed by K8s"
+    ansible.builtin.template:
+      src: "{{ templates_dir }}/sysctl_params.j2"
+      dest: "{{ sysctl_params_path }}"
+  - name: "apply systcl params"
+    ansible.builtin.shell: sudo sysctl --system
+  - name: "create containerd dir"
+    file:
+      name: "{{ containerd_dir }}"
+      state: directory
+  - name: "create containerd config"
+    copy:
+      src: "{{ templates_dir }}/containerd_conf.toml"
+      dest: "{{ containerd_dir }}/{{ containerd_conf }}"
+  - name: "restart containerd"
+    shell: sudo systemctl restart containerd
+  - name: "make sure the needed services are enabled"
+    service:
+      name: "{{ item }}"
+      enabled: yes
+    loop: "{{ common_services }}"
+...
