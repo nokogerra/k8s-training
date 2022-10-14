@@ -12,14 +12,14 @@
       state: present
   - name: "install packages"
     apt:
-      name: "{{ item }}"
+      name: "{{ item.name }}{{ item.version }}"
       state: present
       update_cache: yes
       allow_downgrade: yes
     loop: "{{ common_packages }}"
   - name: "hold installed packages"
     dpkg_selections:
-      name: "{{ item }}"
+      name: "{{ item.name }}"
       selection: hold
     loop: "{{ common_packages }}"
   - name: "show held packages"
