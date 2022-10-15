@@ -1,7 +1,7 @@
 ---
 calico_pool_cidr: "10.115.0.0/16"
 adv_address: "10.251.101.2"
-cri_socker: "/run/containerd/containerd.sock"
+cri_socket: "/run/containerd/containerd.sock"
 node_name: "s1-kub-cn01"
 kub_version: "1.21.0"
 
