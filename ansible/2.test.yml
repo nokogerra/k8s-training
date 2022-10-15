@@ -1,0 +1,7 @@
+---
+- name: "test"
+  hosts: kub_ctrl
+  tasks:
+  - name: "test"
+    shell: wget https://docs.projectcalico.org/manifests/calico.yaml
+...

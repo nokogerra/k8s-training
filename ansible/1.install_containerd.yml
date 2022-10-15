@@ -1,7 +1,12 @@
 ---
+#This playbook will install containerd, kubeadm, kubectl and kubelet, will configure containerd, needed kernel modules and sysctl parameters
+#packagess are going to be put on apt hold
 - name: "install containerd on all nodes"
   hosts: all
   tasks:
+  - name: 'disable UFW'
+    community.general.ufw:
+      state: disabled
   - name: "Add an apt signing key for K8s"
     apt_key:
       url: "{{ kubernetes_gpg_url }}"
