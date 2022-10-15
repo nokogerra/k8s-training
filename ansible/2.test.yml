@@ -2,7 +2,10 @@
 - name: "test"
   hosts: kub_ctrl
   tasks:
-  - name: "test"
+  - name: "create configuration files for calico and cluster"
     become: false
-    shell: wget https://docs.projectcalico.org/manifests/calico.yaml
+    template:
+      src: "{{ templates_dir }}/{{ item.template }}"
+      dest: "{{ item.file }}"
+    loop: "{{ configs }}"
 ...
