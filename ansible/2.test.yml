@@ -3,5 +3,6 @@
   hosts: kub_ctrl
   tasks:
   - name: "test"
+    become: false
     shell: wget https://docs.projectcalico.org/manifests/calico.yaml
 ...
