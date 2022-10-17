@@ -43,10 +43,17 @@
     become: false
     shell: "kubectl apply -f {{ configs[1].file }}"
     register: calico_result
-  - name: "show calico log"
-    debug:
-      msg: "{{ calico_result.stdout }}"
+  - name: "save calico result to log"
+    local_action:
+      module: copy
+      content: "{{ calico_result.stdout }}"
+      dest: "./calico_launch.log"
+  - name: "save calico result to log2"
+    local_action:
+      module: copy
+      content: "{{ calico_result.stdout_lines }}"
+      dest: "./calico_launch2.log"
   - name: "final message"
     debug:
-      msg: "Now check pods with 'kubectl get pods --all-namespaces' and nodes with 'kubectl get nodes'"
+      msg: "Calico pods launch log is calico_launch.log. Now check pods with 'kubectl get pods --all-namespaces' and nodes with 'kubectl get nodes'"
 ...
