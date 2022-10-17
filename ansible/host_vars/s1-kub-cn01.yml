@@ -11,3 +11,5 @@ configs:
 - cluster:
   template: "cluster_conf.j2"
   file: "ClusterConfiguration.yaml"
+
+kube_dir: "$HOME/.kube"

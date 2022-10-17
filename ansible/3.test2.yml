@@ -1,5 +1,5 @@
-- name: "test"
-  hosts: localhost
+- name: "bootstrap cluster"
+  hosts: kub_ctrl
   tasks:
   - name: "task1"
     shell: cat asdasd
@@ -7,5 +7,5 @@
   - name: "task2"
     local_action:
       module: copy
-      content: "{{ resultx.stdout_lines }}"
+      content: "{{ resultx.stdout }}"
       dest: "./kube-init.log"

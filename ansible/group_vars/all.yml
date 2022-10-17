@@ -1,3 +1,6 @@
+userx: "ansible"
+groupx: "ansible"
+
 templates_dir: "templates/"
 
 kernel_modules:

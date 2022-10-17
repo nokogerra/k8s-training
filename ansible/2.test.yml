@@ -9,11 +9,33 @@
       dest: "{{ item.file }}"
     loop: "{{ configs }}"
   - name: "launch bootstrap"
-    shell: sudo kubeadm init --config=ClusterConfiguration.yaml
+    shell: "sudo kubeadm init --config={{ configs[1].file }}"
     register: init_result
   - name: "save init result to log"
     local_action:
       module: copy
-      content: "{{ init_result }}"
+      content: "{{ init_result.stdout }}"
       dest: "./kube_init.log"
+  - name: "check if cluster initialization was successfull"
+    debug:
+      msg: "Controller was initialized successfully! Log: ./kube_init.log"
+    when: init_result | regex_search("Your Kubernetes control-plane has initialized successfully!")
+  - name: "check if cluster initialization failed"
+    debug:
+      msg: "INITIALIZATION FAILED! Log: ./kube_init.log"
+    when: not init_result | regex_search("Your Kubernetes control-plane has initialized successfully!")
+  - name: "create kube dir"
+    become: false
+    file:
+      name: "{{ kube_dir }}"
+      state: directory
+  - name: "copt admin conf"
+    copy:
+      src: /etc/kubernetes/admin.conf
+      dest: "{{ kube_dir }}/admin.conf"
+  - name: "fix owners"
+    file:
+      path: "{{ kube_dir }}/admin.conf"
+      user: "{{ userx }}"
+      group: "{{ groupx }}"
 ...
