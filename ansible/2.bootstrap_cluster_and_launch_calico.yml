@@ -48,11 +48,6 @@
       module: copy
       content: "{{ calico_result.stdout }}"
       dest: "./calico_launch.log"
-  - name: "save calico result to log2"
-    local_action:
-      module: copy
-      content: "{{ calico_result.stdout_lines }}"
-      dest: "./calico_launch2.log"
   - name: "final message"
     debug:
       msg: "Calico pods launch log is calico_launch.log. Now check pods with 'kubectl get pods --all-namespaces' and nodes with 'kubectl get nodes'"
