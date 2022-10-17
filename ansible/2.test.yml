@@ -9,7 +9,7 @@
       dest: "{{ item.file }}"
     loop: "{{ configs }}"
   - name: "launch bootstrap"
-    shell: "sudo kubeadm init --config={{ configs[1].file }}"
+    shell: "sudo kubeadm init --config={{ configs[0].file }}"
     register: init_result
   - name: "save init result to log"
     local_action:
@@ -27,15 +27,15 @@
   - name: "create kube dir"
     become: false
     file:
-      name: "{{ kube_dir }}"
+      name: "/home/{{ userx }}/{{ kube_dir }}"
       state: directory
   - name: "copt admin conf"
     copy:
       src: /etc/kubernetes/admin.conf
-      dest: "{{ kube_dir }}/admin.conf"
+      dest: "/home/{{ userx }}/{{ kube_dir }}/admin.conf"
   - name: "fix owners"
     file:
-      path: "{{ kube_dir }}/admin.conf"
+      path: "/home/{{ userx }}/{{ kube_dir }}/admin.conf"
       user: "{{ userx }}"
       group: "{{ groupx }}"
 ...
