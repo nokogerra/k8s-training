@@ -29,14 +29,24 @@
     file:
       name: "/home/{{ userx }}/{{ kube_dir }}"
       state: directory
-  - name: "copt admin conf"
+  - name: "copy admin conf"
     copy:
       src: /etc/kubernetes/admin.conf
       remote_src: yes
-      dest: "/home/{{ userx }}/{{ kube_dir }}/admin.conf"
-  - name: "fix owners"
+      dest: "/home/{{ userx }}/{{ kube_dir }}/config"
+  - name: "fix admin conf owners"
     file:
-      path: "/home/{{ userx }}/{{ kube_dir }}/admin.conf"
-      user: "{{ userx }}"
+      path: "/home/{{ userx }}/{{ kube_dir }}/config"
+      owner: "{{ userx }}"
       group: "{{ groupx }}"
+  - name: "launch calico"
+    become: false
+    shell: "kubectl apply -f {{ configs[1].file }}"
+    register: calico_result
+  - name: "show calico log"
+    debug:
+      msg: "{{ calico_result.stdout }}"
+  - name: "final message"
+    debug:
+      msg: "Now check pods with 'kubectl get pods --all-namespaces' and nodes with 'kubectl get nodes'"
 ...

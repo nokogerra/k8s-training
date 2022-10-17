@@ -1,7 +1,7 @@
 ---
 #This playbook will install containerd, kubeadm, kubectl and kubelet, will configure containerd, needed kernel modules and sysctl parameters
 #packagess are going to be put on apt hold
-- name: "install containerd on all nodes"
+- name: "install containerd, configure modules and sysctl on all nodes"
   hosts: all
   tasks:
   - name: 'disable UFW'
