@@ -1,5 +1,5 @@
 ---
-- name: "test"
+- name: "bootstratp kube cluster"
   hosts: kub_ctrl
   tasks:
   - name: "create configuration files for calico and cluster"
@@ -8,4 +8,12 @@
       src: "{{ templates_dir }}/{{ item.template }}"
       dest: "{{ item.file }}"
     loop: "{{ configs }}"
+  - name: "launch bootstrap"
+    shell: sudo kubeadm init --config=ClusterConfiguration.yaml
+    register: init_result
+  - name: "save init result to log"
+    local_action:
+      module: copy
+      content: "{{ init_result }}"
+      dest: "./kube_init.log"
 ...

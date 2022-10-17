@@ -7,5 +7,5 @@
   - name: "task2"
     local_action:
       module: copy
-      content: "{{ resultx }}"
+      content: "{{ resultx.stdout_lines }}"
       dest: "./kube-init.log"
