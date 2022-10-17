@@ -1,0 +1,11 @@
+- name: "test"
+  hosts: localhost
+  tasks:
+  - name: "task1"
+    shell: cat asdasd
+    register: resultx
+  - name: "task2"
+    local_action:
+      module: copy
+      content: "{{ resultx }}"
+      dest: "./kube-init.log"
