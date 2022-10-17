@@ -31,7 +31,7 @@
       state: directory
   - name: "copt admin conf"
     copy:
-      src: /etc/kubernetes/admin.conf
+      remote_src: /etc/kubernetes/admin.conf
       dest: "/home/{{ userx }}/{{ kube_dir }}/admin.conf"
   - name: "fix owners"
     file:
