@@ -33,6 +33,8 @@
   - name: "show held packages"
     debug:
       msg: "{{ held_packages.stdout_lines }}"
+  - name: "enable kubectl autocompletion"
+    shell: kubectl completion bash | sudo tee /etc/bash_completion.d/kubectl > /dev/null
   - name: "enable kernel modules needed by containerd"
     ansible.builtin.shell: "sudo modprobe {{ item }}"
     loop: "{{ kernel_modules }}"
