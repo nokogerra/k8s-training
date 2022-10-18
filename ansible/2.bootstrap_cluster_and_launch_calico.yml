@@ -22,8 +22,9 @@
       msg: "Controller was initialized successfully! Log: ./kube_init.log"
     when: init_result | regex_search("Your Kubernetes control-plane has initialized successfully!")
   - name: "check if cluster initialization failed"
-    fail:
+    debug:
       msg: "INITIALIZATION FAILED! Log: ./kube_init.log"
+    meta: end_play
     when: not init_result | regex_search("Your Kubernetes control-plane has initialized successfully!")
   - name: "get join token"
     delegate_to: localhost
