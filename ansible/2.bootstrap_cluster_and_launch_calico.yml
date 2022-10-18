@@ -20,10 +20,20 @@
     debug:
       msg: "Controller was initialized successfully! Log: ./kube_init.log"
     when: init_result | regex_search("Your Kubernetes control-plane has initialized successfully!")
+    register: init_success
   - name: "check if cluster initialization failed"
     debug:
       msg: "INITIALIZATION FAILED! Log: ./kube_init.log"
     when: not init_result | regex_search("Your Kubernetes control-plane has initialized successfully!")
+  - name: "get join token"
+    shell: cat ./kube_init.log | grep -A 2 "kubeadm join"
+    register: join_token
+  - name: "show join token"
+    debug:
+      msg: "{{ join_token.stdout }}"
+  - name: "show join token2"
+    debug:
+      msg: "{{ join_token.stdout_lines }}"
   - name: "create kube dir"
     become: false
     file:
