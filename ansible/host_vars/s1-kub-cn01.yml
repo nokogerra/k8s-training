@@ -4,7 +4,7 @@ cri_socket: "/run/containerd/containerd.sock"
 node_name: "s1-kub-cn01"
 kub_version: "v1.21.0"
 
-#cluster config must be the first one in the list!!!
+#cluster config must be the first one in the list and calico conf must be the second one
 configs:
 - cluster:
   template: "cluster_conf.j2"
