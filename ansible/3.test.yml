@@ -1,0 +1,9 @@
+- name: "test"
+  hosts: localhost
+  tasks:
+  - name: "get token"
+    shell: cat ./kube_init.log | grep -A 2 "kubeadm join"
+    register: result
+  - name: "show"
+    debug:
+      msg: "{{ result.stdout.msg }}"
