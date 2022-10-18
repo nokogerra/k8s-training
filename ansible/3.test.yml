@@ -4,6 +4,9 @@
   - name: "get token"
     shell: cat ./kube_init.log | grep -A 2 "kubeadm join"
     register: result
+  - name: "form join command"
+    shell: "{{ result.stdout }} | sed 's/\\//g' | sed 's/nt--/--/'"
+    register: join_command
   - name: "show"
     debug:
-      msg: "{{ result.stdout.msg }}"
+      var: join_command
