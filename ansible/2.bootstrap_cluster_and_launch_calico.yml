@@ -55,7 +55,6 @@
     shell: "kubectl apply -f {{ configs[1].file }}"
     register: calico_result
   - name: "save calico result to log"
-    local_action:
     become: false
     delegate_to: localhost
     copy:
