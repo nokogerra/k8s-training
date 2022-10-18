@@ -56,7 +56,9 @@
     register: calico_result
   - name: "save calico result to log"
     local_action:
-      module: copy
+    become: false
+    delegate_to: localhost
+    copy:
       content: "{{ calico_result.stdout }}"
       dest: "./calico_launch.log"
   - name: "final message"
