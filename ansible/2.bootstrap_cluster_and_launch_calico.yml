@@ -23,14 +23,11 @@
     when: init_result.stdout | regex_search("Your Kubernetes control-plane has initialized successfully!")
   - name: "get join token"
     delegate_to: localhost
-    shell: cat ./kube_init.log | grep -A 2 "kubeadm join"
+    shell: grep -A 2 "kubeadm join" ./kube_init.log | sed 's/\\//g' | tr -d '\t' | tr -d '\n'
     register: join_token
   - name: "show join token"
     debug:
       msg: "{{ join_token.stdout }}"
-  - name: "show join token2"
-    debug:
-      msg: "{{ join_token.stdout_lines }}"
   - name: "create kube dir"
     become: false
     file:
@@ -56,7 +53,31 @@
     copy:
       content: "{{ calico_result.stdout }}"
       dest: "./calico_launch.log"
-  - name: "final message"
+  - name: "init final message"
     debug:
       msg: "Calico pods launch log is calico_launch.log. Now check pods with 'kubectl get pods --all-namespaces' and nodes with 'kubectl get nodes'"
+  - name: 
+    ansible.builtin.pause:
+      echo: true
+      seconds: 120
+      prompt: 'waiting for calico to start up'
+- name: "join nodes"
+  hosts: kube_nodes
+  tasks:
+  - name: "get join token"
+    delegate_to: localhost
+    shell: grep -A 2 "kubeadm join" ./kube_init.log | sed 's/\\//g' | tr -d '\t' | tr -d '\n'
+    register: join_tokenx
+  - name: "join"
+    shell: "sudo {{ join_tokenx.stdout }}"
+    register: join_result
+  - name: "save join result to log"
+    become: false
+    delegate_to: localhost
+    copy:  
+      content: "{{ join_result.stdout }}"
+      dest: "./{{ ansible_facts['ansible_hostname'] }}_join.log"
+  - name: "join final message"
+    debug:
+      msg: "Now check pods with 'kubectl get pods --all-namespaces' and nodes with 'kubectl get nodes'"
 ...
