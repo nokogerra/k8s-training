@@ -12,8 +12,9 @@
     shell: "sudo kubeadm init --config={{ configs[0].file }}"
     register: init_result
   - name: "save init result to log"
-    local_action:
-      module: copy
+    become: false
+    delegate_to: localhost
+    copy:  
       content: "{{ init_result.stdout }}"
       dest: "./kube_init.log"
   - name: "check if cluster initialization was successfull"
