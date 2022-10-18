@@ -62,7 +62,7 @@
       seconds: 120
       prompt: 'waiting for calico to start up'
 - name: "join nodes"
-  hosts: kube_nodes
+  hosts: kub_nodes
   tasks:
   - name: "get join token"
     delegate_to: localhost
