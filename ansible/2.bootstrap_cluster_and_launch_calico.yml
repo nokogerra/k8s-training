@@ -76,7 +76,7 @@
     delegate_to: localhost
     copy:  
       content: "{{ join_result.stdout }}"
-      dest: "./{{ ansible_facts['ansible_hostname'] }}_join.log"
+      dest: "./{{ ansible_facts['hostname'] }}_join.log"
   - name: "join final message"
     debug:
       msg: "Now check pods with 'kubectl get pods --all-namespaces' and nodes with 'kubectl get nodes'"
