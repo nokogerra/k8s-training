@@ -29,3 +29,18 @@ openssl x509 -pubkey -in /etc/kubernetes/pki/ca.crt | openssl rsa -pubin -outfor
 #https://kubernetes.io/docs/tasks/tools/included/optional-kubectl-configs-bash-linux/
 echo 'source <(kubectl completion bash)' >>~/.bashrc
 kubectl completion bash | sudo tee /etc/bash_completion.d/kubectl > /dev/null
+
+#show clusters
+ansible@s1-kub-cn01:~$ kubectl config get-clusters
+NAME
+kubernetes
+
+#show available contexts
+ansible@s1-kub-cn01:~$ kubectl config get-contexts
+CURRENT   NAME                          CLUSTER      AUTHINFO           NAMESPACE
+*         kubernetes-admin@kubernetes   kubernetes   kubernetes-admin
+
+#use context
+ansible@s1-kub-cn01:~$ kubectl config use-context kubernetes-admin@kubernetes
+Switched to context "kubernetes-admin@kubernetes".
+
