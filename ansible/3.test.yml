@@ -61,8 +61,8 @@
     ansible.builtin.shell: "kubectl get pods --all-namespaces | awk '{print $4}' | grep -v STATUS"
     register: pods_status
     until: pods_status.stdout_lines | unique | sort | join('') | trim == 'Running'
-    delay: 3
-    retries: 100
+    delay: 20
+    retries: 10
 - name: "join nodes"
   hosts: kub_nodes
   tasks:
@@ -79,7 +79,14 @@
     copy:  
       content: "{{ join_result.stdout }}"
       dest: "./{{ ansible_facts['hostname'] }}_join.log"
+  - name: "Waiting for all nodes to become ready"
+    become: false
+    ansible.builtin.shell: "kubectl get nodes | awk '{print $2}' | grep -v STATUS"
+    register: nodes_status
+    until: nodes_status.stdout_lines | unique | sort | join('') | trim == 'Ready'
+    delay: 20
+    retries: 10
   - name: "join final message"
     debug:
-      msg: "Now check pods with 'kubectl get pods --all-namespaces' and nodes with 'kubectl get nodes'"
+      msg: "All nodes are Ready. Now check pods with 'kubectl get pods --all-namespaces' and nodes with 'kubectl get nodes'"
 ...
