@@ -2,6 +2,16 @@
 - name: "bootstratp kube cluster"
   hosts: kub_ctrl
   tasks:
+  - name: "fool protection"
+    become: false
+    shell: kubectl get nodes
+    register: existing_nodes
+  - block:
+    - name: "stop if there are any existong k8s nodes"
+      debug:
+        msg: "There are already some existing K8s nodes on this machine!"
+    - meta: end_play
+    when: existing_nodes.stdout | regex_search("STATUS")
   - name: "create configuration files for calico and cluster"
     become: false
     template:
@@ -81,6 +91,7 @@
       dest: "./{{ ansible_facts['hostname'] }}_join.log"
   - name: "Waiting for all nodes to become ready"
     become: false
+    delegate_to: kub_ctrl
     ansible.builtin.shell: "kubectl get nodes | awk '{print $2}' | grep -v STATUS"
     register: nodes_status
     until: nodes_status.stdout_lines | unique | sort | join('') | trim == 'Ready'
