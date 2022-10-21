@@ -37,21 +37,16 @@
     shell: kubectl completion bash | sudo tee /etc/bash_completion.d/kubectl > /dev/null
   - name: "enable kubeadm autocompletion"
     shell: kubeadm completion bash | sudo tee /etc/bash_completion.d/kubeadm > /dev/null
-  - name: "enable kernel modules needed by containerd"
-    ansible.builtin.shell: "sudo modprobe {{ item }}"
-    loop: "{{ kernel_modules }}"
   - name: "create kernel modules auto-load config"
     ansible.builtin.template:
       src: "{{ templates_dir }}/containerd_modules.j2"
       dest: "{{ kernel_modules_path }}"
-    notify: "restart containerd"
+    notify: "restart systemd-modules-load"
   - name: "configure sysctl params needed by K8s"
     ansible.builtin.template:
       src: "{{ templates_dir }}/sysctl_params.j2"
       dest: "{{ sysctl_params_path }}"
     notify: "apply sysctl"
-  - name: "apply systcl params"
-    ansible.builtin.shell: sudo sysctl --system
   - name: "create containerd dir"
     file:
       name: "{{ containerd_dir }}"
@@ -60,11 +55,22 @@
     copy:
       src: "{{ templates_dir }}/containerd_conf.toml"
       dest: "{{ containerd_dir }}/{{ containerd_conf }}"
-  - name: "restart containerd"
-    shell: sudo systemctl restart containerd
+    notify: "restart containerd"
   - name: "make sure the needed services are enabled"
     service:
       name: "{{ item }}"
       enabled: yes
     loop: "{{ common_services }}"
+  
+  handlers:
+  - name: "restart systemd-modules-load"
+    service:
+      name: systemd-modules-load.service
+      state: restarted
+  - name: "apply sysctl"
+    ansible.builtin.shell: sudo sysctl --system
+  - name: "restart containerd"
+    service:
+      name: containerd.service
+      state: restarted 
 ...
