@@ -60,7 +60,7 @@
     become: false
     ansible.builtin.shell: "kubectl get pods --all-namespaces | awk '{print $4}' | grep -v STATUS"
     register: pods_status
-    until: pods_status.json.status == "Running"
+    until: pods_status.stdout_lines | unique | sort | join('') | trim == 'Running'
     delay: 3
     retries: 100
 - name: "join nodes"
