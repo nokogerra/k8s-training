@@ -1,6 +1,7 @@
 ---
 #This playbook will install containerd, kubeadm, kubectl and kubelet, will configure containerd, needed kernel modules and sysctl parameters
 #packagess are going to be put on apt hold
+#This playbook is idempotent, you can safely run it as many times, as you want
 - name: "install containerd, configure modules and sysctl on all nodes"
   hosts: all
   tasks:

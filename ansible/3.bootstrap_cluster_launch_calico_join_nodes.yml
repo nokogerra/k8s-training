@@ -1,5 +1,6 @@
 ---
 #This playbook is not idempotent!!! You should use it only in case there are no K8s clusters already bootstrapped on the target machine!
+#This playbook will make create cluster config file and calico manifest, then bootstrap cluster and next join worker nodes to it (the nodes in the ansible inventory)
 - name: "bootstratp kube cluster"
   hosts: kub_ctrl
   tasks:
