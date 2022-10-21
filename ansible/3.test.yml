@@ -74,6 +74,7 @@
     delay: 20
     retries: 10
 - name: "join nodes"
+  any_errors_fatal: true
   hosts: kub_nodes
   tasks:
   - name: "get join token"
