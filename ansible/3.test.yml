@@ -1,5 +1,6 @@
 ---
 - name: "bootstratp kube cluster"
+  any_errors_fatal: true
   hosts: kub_ctrl
   tasks:
   - name: "fool protection"
