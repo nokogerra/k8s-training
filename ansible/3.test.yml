@@ -77,7 +77,7 @@
   hosts: kub_nodes
   tasks:
   - name: "fool protection"
-    delegate_to: kub_ctrl
+    delegate_to: "{{ ctrl_name }}"
     become: false
     shell: kubectl get nodes
     register: existing_nodes2
@@ -102,7 +102,7 @@
       dest: "./{{ ansible_facts['hostname'] }}_join.log"
   - name: "Waiting for all nodes to become ready"
     become: false
-    delegate_to: kub_ctrl
+    delegate_to: "{{ ctrl_name }}"
     ansible.builtin.shell: "kubectl get nodes | awk '{print $2}' | grep -v STATUS"
     register: nodes_status
     until: nodes_status.stdout_lines | unique | sort | join('') | trim == 'Ready'
