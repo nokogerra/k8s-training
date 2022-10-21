@@ -58,7 +58,7 @@
       msg: "Calico pods launch log is calico_launch.log. Now check pods with 'kubectl get pods --all-namespaces' and nodes with 'kubectl get nodes'"
   - name: "Waiting for all pods to start"
     become: false
-    ansible.builtin.pause:shell: "kubectl get pods --all-namespaces | awk '{print $4}' | grep -v STATUS"
+    ansible.builtin.shell: "kubectl get pods --all-namespaces | awk '{print $4}' | grep -v STATUS"
     register: pods_status
     until: pods_status.json.status == "Running"
     delay: 3
