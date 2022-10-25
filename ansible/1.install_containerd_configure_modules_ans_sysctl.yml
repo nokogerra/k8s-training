@@ -62,6 +62,10 @@
       name: "{{ item }}"
       enabled: yes
     loop: "{{ common_services }}"
+  - name: "create crictl config"
+    template:
+      src: "{{ templates_dir }}/crictl.j2"
+      dest: "/etc/crictl.yaml"
   
   handlers:
   - name: "restart systemd-modules-load"
