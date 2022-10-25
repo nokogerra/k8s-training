@@ -66,6 +66,8 @@
     template:
       src: "{{ templates_dir }}/crictl.j2"
       dest: "/etc/crictl.yaml"
+  - name: "enable crictl autocompletion"
+    shell: crictl completion | sudo tee /etc/bash_completion.d/crictl > /dev/null
   
   handlers:
   - name: "restart systemd-modules-load"

@@ -13,4 +13,14 @@ ansible@s1-kub-cn01:~$ kubectl get pods -o wide
 #https://kubernetes.io/docs/tasks/debug/debug-cluster/crictl/
 #from the worker node
 sudo crictl --runtime-endpoint unix:///run/containerd/containerd.sock ps
+#or
+#cat /etc/crictl.yaml
+#runtime-endpoint: unix:///var/run/containerd/containerd.sock
+#image-endpoint: unix:///var/run/containerd/containerd.sock
+#timeout: 10
+##debug: trueansible@s1-kub-wn02:~$
+#or
+sudo crictl --config=path_to_yaml
+
+
 
