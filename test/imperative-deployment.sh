@@ -1,5 +1,6 @@
 #create deployment
 kubectl create deployment test1 --image=gcr.io/google-samples/hello-app:1.0
+kubectl get replicasets.apps
 #create and run standalone pod
 kubectl run test1-pod --image=gcr.io/google-samples/hello-app:1.0
 
@@ -23,4 +24,15 @@ sudo crictl --runtime-endpoint unix:///run/containerd/containerd.sock ps
 sudo crictl --config=path_to_yaml
 
 
+kubectl logs calico-node-fbwhl --namespace=kube-system
+kubectl logs test1-pod
+kubectl exec -it test1-pod /bin/sh
+kubectl exec --namespace=kube-system etcd-s1-kub-cn01 -it -- /bin/sh
+kubectl config set-context --current --namespace=my-namespace
+
+
+#expose
+kubectl expose deployment test1 --port=80 --target-port=8080
+kubectl get services
+kubectl get endpoints test1
 

@@ -36,8 +36,10 @@
       msg: "{{ held_packages.stdout_lines }}"
   - name: "enable kubectl autocompletion"
     shell: kubectl completion bash | sudo tee /etc/bash_completion.d/kubectl > /dev/null
+    changed_when: false
   - name: "enable kubeadm autocompletion"
     shell: kubeadm completion bash | sudo tee /etc/bash_completion.d/kubeadm > /dev/null
+    changed_when: false
   - name: "create kernel modules auto-load config"
     ansible.builtin.template:
       src: "{{ templates_dir }}/containerd_modules.j2"
@@ -68,7 +70,7 @@
       dest: "/etc/crictl.yaml"
   - name: "enable crictl autocompletion"
     shell: crictl completion | sudo tee /etc/bash_completion.d/crictl > /dev/null
-  
+    changed_when: false  
   handlers:
   - name: "restart systemd-modules-load"
     service:
