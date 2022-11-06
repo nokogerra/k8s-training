@@ -1,0 +1,18 @@
+#kubectl expose deployment web-app02 -n web-app02 --port=80 --target-port=8080 -o yaml --dry-run=client
+apiVersion: v1
+kind: Service
+metadata:
+  creationTimestamp: null
+  labels:
+    app: web-app02
+  name: web-app02
+  namespace: web-app02
+spec:
+  ports:
+  - port: 80
+    protocol: TCP
+    targetPort: 8080
+  selector:
+    app: web-app02
+status:
+  loadBalancer: {}

@@ -1,0 +1,70 @@
+apiVersion: v1
+kind: Pod
+metadata:
+#  namespace: web-app01
+  creationTimestamp: null
+  labels:
+    apppurpose: web-app
+    tier: dev
+    appversion: v1
+  name: websrv01
+spec:
+  containers:
+  - image: nginx
+    name: websrv01
+    ports:
+    - containerPort: 80
+    resources: {}
+  nodeSelector:
+    storage: SSD
+    gpus: NVIDIA
+  dnsPolicy: ClusterFirst
+  restartPolicy: Always
+status: {}
+---
+apiVersion: v1
+kind: Pod
+metadata:
+#  namespace: web-app01
+  creationTimestamp: null
+  labels:
+    apppurpose: web-app
+    tier: dev
+    appversion: v2
+  name: websrv02
+spec:
+  containers:
+  - image: nginx
+    name: websrv02
+    ports:
+    - containerPort: 80
+    resources: {}
+  nodeSelector:
+    storage: SSD
+    gpus: noGPU
+  dnsPolicy: ClusterFirst
+  restartPolicy: Always
+status: {}
+---
+apiVersion: v1
+kind: Pod
+metadata:
+#  namespace: web-app01
+  creationTimestamp: null
+  labels:
+    apppurpose: lb
+    tier: dev
+    appversion: v1
+  name: websrv03
+spec:
+  containers:
+  - image: nginx
+    name: websrv03
+    ports:
+    - containerPort: 80
+    resources: {}
+  nodeSelector:
+    storage: NonSSD
+  dnsPolicy: ClusterFirst
+  restartPolicy: Always
+status: {}
