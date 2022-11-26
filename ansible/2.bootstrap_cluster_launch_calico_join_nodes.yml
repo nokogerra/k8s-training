@@ -1,10 +1,10 @@
 ---
 #This playbook is not idempotent!!! You should use it only in case there are no K8s clusters already bootstrapped on the target machine!
 #This playbook will make cluster config file and calico manifest, then bootstrap cluster and next join worker nodes to it (the nodes are in the ansible inventory)
-- name: "bootstratp kube cluster"
+- name: "bootstrap kube cluster"
   hosts: kub_ctrl
   tasks:
-  - name: "create configuration files for calico and cluster"
+  - name: "create configuration files for calico and cluster on the controller node"
     become: false
     template:
       src: "{{ templates_dir }}/{{ item.template }}"
@@ -24,6 +24,7 @@
       msg: "Controller was initialized successfully! Log: ./kube_init.log"
     when: init_result.stdout | regex_search("Your Kubernetes control-plane has initialized successfully!")
   - name: "get join token"
+    become: false
     delegate_to: localhost
     shell: grep -A 2 "kubeadm join" ./kube_init.log | sed 's/\\//g' | tr -d '\t' | tr -d '\n'
     register: join_token
@@ -69,10 +70,11 @@
   hosts: kub_nodes
   tasks:
   - name: "get join token"
+    become: false
     delegate_to: localhost
     shell: grep -A 2 "kubeadm join" ./kube_init.log | sed 's/\\//g' | tr -d '\t' | tr -d '\n'
     register: join_tokenx
-  - name: "join"
+  - name: "join worker nodes to cluster"
     shell: "sudo {{ join_tokenx.stdout }}"
     register: join_result
   - name: "save join result to log"

@@ -1,5 +1,6 @@
 #ctrl name should be resolvable
-ctrl_name: "s1-kub-cn01"
+ctrl_name: "s1-kub02-cn01.nokogerra.lab"
+#user and group on k8s nodes
 userx: "ansible"
 groupx: "ansible"
 
@@ -20,7 +21,7 @@ sysctl_params_path: "/etc/sysctl.d/99-kubernetes-cri.conf"
 
 common_packages:
 - name: "containerd"
-  version: "=1.5.9-0ubuntu1~20.04.4"
+  version: "=1.5.9-0ubuntu1~20.04.5"
 - name: "kubelet"
   version: "=1.21.0-00"
 - name: "kubeadm"

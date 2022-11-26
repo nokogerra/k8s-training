@@ -1,7 +1,7 @@
-calico_pool_cidr: "10.115.0.0/16"
-adv_address: "10.215.101.2"
+calico_pool_cidr: "10.116.0.0/16"
+adv_address: "10.215.102.11"
 cri_socket: "/run/containerd/containerd.sock"
-node_name: "s1-kub-cn01"
+node_name: "s1-kub02-cn01"
 kub_version: "v1.21.0"
 
 #cluster config must be the first one in the list and calico conf must be the second one
