@@ -18,7 +18,7 @@
       state: present
   - name: "install packages"
     apt:
-      name: "{{ item.name }}{{ item.version }}"
+      name: "{{ item.name }}={{ item.version }}"
       state: present
       update_cache: yes
       allow_downgrade: yes
