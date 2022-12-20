@@ -6,3 +6,6 @@ OR
 kubectl edit deployments deployment-example
 
 kubectl scale deployment deployment-example --replicas=1
+
+!!!!!!
+kubectl diff -f file.yml
