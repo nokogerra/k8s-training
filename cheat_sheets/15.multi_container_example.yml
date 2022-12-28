@@ -1,0 +1,49 @@
+apiVersion: v1
+kind: Pod
+metadata:
+  creationTimestamp: null
+  labels:
+    run: my-app
+  name: my-app
+spec:
+  containers:
+  - image: nginx
+    name: web-app
+    resources: {}
+    ports:
+    - containerPort: 80
+    volumeMounts:
+    - name: content
+      mountPath: /usr/share/nginx/html
+  - image: ubuntu
+    name: data
+    resources: {}
+    command: ["/bin/bash"]
+    args: ["-c", "while true; do echo $(hostname) - $(date) >> /var/log/index.html; sleep 10; done"]
+    volumeMounts:
+    - name: content
+      mountPath: /var/log
+  volumes:
+  - name: content
+    emptyDir: {}
+  dnsPolicy: ClusterFirst
+  restartPolicy: Always
+status: {}
+---
+apiVersion: v1
+kind: Service
+metadata:
+  labels:
+    run: my-app
+  name: my-app
+spec:
+  ports:
+  - port: 8080
+    protocol: TCP
+    targetPort: 80
+    nodePort: 31080
+  selector:
+    run: my-app
+  type: NodePort
+status:
+  loadBalancer: {}
