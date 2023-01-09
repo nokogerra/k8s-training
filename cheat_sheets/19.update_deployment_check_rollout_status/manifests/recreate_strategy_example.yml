@@ -1,0 +1,57 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  creationTimestamp: null
+  labels:
+    app: update-test
+  name: update-test
+spec:
+  replicas: 5
+  selector:
+    matchLabels:
+      app: update-test
+  progressDeadlineSeconds: 900
+  strategy:
+    type: Recreate
+  template:
+    metadata:
+      creationTimestamp: null
+      labels:
+        app: update-test
+    spec:
+      containers:
+      - image: nginx:1.22
+        name: nginx
+        resources: {}
+        ports:
+        - containerPort: 80
+        startupProbe:
+          tcpSocket:
+            port: 80
+          initialDelaySeconds: 10
+          periodSeconds: 5
+          failureThreshold: 5
+        readinessProbe:
+          httpGet:
+            path: /
+            port: 80
+          initialDelaySeconds: 10
+          periodSeconds: 5
+          failureThreshold: 2
+status: {}
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: update-test
+  labels:
+    app: update-test
+spec:
+  type: NodePort
+  selector:
+    app: update-test
+  ports:
+  - protocol: TCP
+    port: 8080
+    targetPort: 80
+    nodePort: 30036

@@ -1,0 +1,43 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  creationTimestamp: null
+  labels:
+    app: update-test
+  name: update-test
+spec:
+  replicas: 3
+  selector:
+    matchLabels:
+      app: update-test
+  strategy: {}
+  template:
+    metadata:
+      creationTimestamp: null
+      labels:
+        app: update-test
+    spec:
+      containers:
+#check the nginx version:
+      - image: nginx:1.22
+        name: nginx
+        resources: {}
+        ports:
+        - containerPort: 80
+status: {}
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: update-test
+  labels:
+    app: update-test
+spec:
+  type: NodePort
+  selector:
+    app: update-test
+  ports:
+  - protocol: TCP
+    port: 8080
+    targetPort: 80
+    nodePort: 30036

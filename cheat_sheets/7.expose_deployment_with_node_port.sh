@@ -10,8 +10,8 @@ spec:
     app: deployment-example
   ports:
   - protocol: TCP
-    port: 80
-    targetPort: 9080
+    port: 8080
+    targetPort: 80
     nodePort: 30036
 
 kubectl apply -f deployment-example-service.yml
